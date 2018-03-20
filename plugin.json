@@ -1,0 +1,12 @@
+{
+	"id": "nodebb-plugin-import-luna",
+	"name": "nodebb-plugin-import-luna",
+	"description": "Exporter for Luna forum compatible with nodebb-plugin-import",
+	"url": "hhttps://github.com/mmathias01/nodebb-plugin-import-luna",
+	"library": "./admin/index.js",
+	"hooks": [
+		{ "hook": "filter:admin.header.build", "method": "admin.menu"},
+		{ "hook": "static:app.load", "method": "admin.load"}
+	],
+	"templates": "./public/templates"
+}
