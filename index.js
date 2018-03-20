@@ -23,8 +23,8 @@ var logPrefix = '[nodebb-plugin-import-luna]';
 		Exporter.config(_config);
 		Exporter.config('prefix', config.prefix || config.tablePrefix || '');
 
-		Exporter.connection = mysql.createConnection(_config);
-		Exporter.connection.connect();
+		Exporter.connection = mysql.createPool(_config);
+		//Exporter.connection.connect();
 
 		callback(null, Exporter.config());
 	};
