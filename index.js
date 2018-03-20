@@ -3,7 +3,7 @@ var async = require('async');
 var mysql = require('mysql');
 var _ = require('underscore');
 var noop = function(){};
-var logPrefix = '[nodebb-plugin-import-ubb]';
+var logPrefix = '[nodebb-plugin-import-luna]';
 
 (function(Exporter) {
 
@@ -39,31 +39,31 @@ var logPrefix = '[nodebb-plugin-import-ubb]';
 		var prefix = Exporter.config('prefix');
 		var startms = +new Date();
 		var query = 'SELECT '
-				+ prefix + 'USERS.id as _uid, '
-				+ prefix + 'USERS.username as _username, '
-				//+ prefix + 'USERS.USER_DISPLAY_NAME as _alternativeUsername, '
-				//+ prefix + 'USERS.email as _registrationEmail, '
-				//+ prefix + 'USERS.USER_MEMBERSHIP_LEVEL as _level, '
-				+ prefix + 'USERS.registered as _joindate, '
-				+ prefix + 'BANS.id as _banned, '
-				+ prefix + 'USERS.email as _email, '
-				+ prefix + 'USERS.signature as _signature, '
-				+ prefix + 'USERS.url as _website, '
-				+ prefix + 'USERS.title as _occupation, '
-				+ prefix + 'USERS.location as _location, '
+				+ prefix + 'users.id as _uid, '
+				+ prefix + 'users.username as _username, '
+				//+ prefix + 'users.USER_DISPLAY_NAME as _alternativeUsername, '
+				//+ prefix + 'users.email as _registrationEmail, '
+				//+ prefix + 'users.USER_MEMBERSHIP_LEVEL as _level, '
+				+ prefix + 'users.registered as _joindate, '
+				+ prefix + 'bans.id as _banned, '
+				+ prefix + 'users.email as _email, '
+				+ prefix + 'users.signature as _signature, '
+				+ prefix + 'users.url as _website, '
+				+ prefix + 'users.title as _occupation, '
+				+ prefix + 'users.location as _location, '
 				//+ prefix + 'USER_PROFILE.USER_AVATAR as _picture, '
 				//+ prefix + 'USER_PROFILE.USER_TITLE as _badge, '
 				//+ prefix + 'USER_PROFILE.USER_RATING as _reputation, '
 				//+ prefix + 'USER_PROFILE.USER_TOTAL_RATES as _profileviews, '
 				//+ prefix + 'USER_PROFILE.USER_BIRTHDAY as _birthday, '
-				//+ prefix + 'BANNED_USERS.USER_ID as _banned, '
-				+ prefix + 'USERS.group_id as _gid, '
-				+ prefix + 'USERS.last_comment as _lastposttime,'
-            	+ prefix + 'USERS.last_visit as _lastonline '
+				//+ prefix + 'BANNED_users.USER_ID as _banned, '
+				+ prefix + 'users.group_id as _gid, '
+				+ prefix + 'users.last_comment as _lastposttime,'
+            	+ prefix + 'users.last_visit as _lastonline '
 
-				+ 'FROM ' + prefix + 'USERS '
+				+ 'FROM ' + prefix + 'users '
 
-				+ 'LEFT JOIN ' + prefix + 'BANS ON ' + prefix + 'BANS.username = ' + prefix + 'USERS.username '
+				+ 'LEFT JOIN ' + prefix + 'bans ON ' + prefix + 'bans.username = ' + prefix + 'users.username '
 				+ (start >= 0 && limit >= 0 ? 'LIMIT ' + start + ',' + limit : '');
 
 
@@ -161,13 +161,13 @@ var logPrefix = '[nodebb-plugin-import-ubb]';
 		var prefix = Exporter.config('prefix');
 		var startms = +new Date();
 		var query = 'SELECT '
-				+ prefix + 'FORUMS.id as _cid, '
-				+ prefix + 'FORUMS.forum_name as _name, '
-				+ prefix + 'FORUMS.forum_desc as _description, '
-				//+ prefix + 'FORUMS.FORUM_CREATED_ON as _timestamp '
-        	    + prefix + 'FORUMS.color as _bgColor, '
-            	+ prefix + 'FORUMS.icon as _icon '
-        		+ 'FROM ' + prefix + 'FORUMS '
+				+ prefix + 'forums.id as _cid, '
+				+ prefix + 'forums.forum_name as _name, '
+				+ prefix + 'forums.forum_desc as _description, '
+				//+ prefix + 'forums.FORUM_CREATED_ON as _timestamp '
+        	    + prefix + 'forums.color as _bgColor, '
+            	+ prefix + 'forums.icon as _icon '
+        		+ 'FROM ' + prefix + 'forums '
 				+ (start >= 0 && limit >= 0 ? 'LIMIT ' + start + ',' + limit : '');
 
 
@@ -209,19 +209,19 @@ var logPrefix = '[nodebb-plugin-import-ubb]';
 		var startms = +new Date();
 		var query =
 				'SELECT '
-				+ prefix + 'TOPICS.id as _tid, '
-				+ prefix + 'TOPICS.subject as _title, '
-				+ prefix + 'TOPICS.FORUM_ID as _cid, '
-				+ prefix + 'POSTS.commenter_id as _uid, '
-				+ prefix + 'POSTS.message as _content, '
-				+ prefix + 'TOPICS.num_views as _viewcount, '
-				+ prefix + 'TOPICS.commented as _timestamp, '
-				+ prefix + 'TOPICS.pinned as _pinned, '
-				+ prefix + 'TOPICS.closed as _locked, '
-				+ prefix + 'POSTS.edited as _edited, '
-				+ prefix + 'POSTS.commenter_ip as _ip '
-				+ 'FROM ' + prefix + 'THREADS as TOPICS '
-				+ 'JOIN ' + prefix + 'COMMENTS as POSTS  ON ' + prefix + 'POSTS.id=' + prefix + 'TOPICS.first_comment_id '
+				+ prefix + 'topics.id as _tid, '
+				+ prefix + 'topics.subject as _title, '
+				+ prefix + 'topics.FORUM_ID as _cid, '
+				+ prefix + 'posts.commenter_id as _uid, '
+				+ prefix + 'posts.message as _content, '
+				+ prefix + 'topics.num_views as _viewcount, '
+				+ prefix + 'topics.commented as _timestamp, '
+				+ prefix + 'topics.pinned as _pinned, '
+				+ prefix + 'topics.closed as _locked, '
+				+ prefix + 'posts.edited as _edited, '
+				+ prefix + 'posts.commenter_ip as _ip '
+				+ 'FROM ' + prefix + 'threads as topics '
+				+ 'JOIN ' + prefix + 'comments as posts  ON ' + prefix + 'posts.id=' + prefix + 'topics.first_comment_id '
 				+ (start >= 0 && limit >= 0 ? 'LIMIT ' + start + ',' + limit : '');
 
 		if (!Exporter.connection) {
@@ -269,10 +269,10 @@ var logPrefix = '[nodebb-plugin-import-ubb]';
 				+ 'comments.commented as _timestamp, '
 				+ 'edited as _edited, '
 				+ 'commenter_ip as _ip, '
-				+ 'THREADS.first_comment_id as _first_comment_id '
-				+ 'FROM ' + prefix + 'COMMENTS '
-            	+ 'LEFT JOIN ' + prefix + 'THREADS ON ' + prefix + 'THREADS.first_comment_id=' + prefix + 'COMMENTS.id '
-				+ 'WHERE THREADS.first_comment_id IS NULL '
+				+ 'threads.first_comment_id as _first_comment_id '
+				+ 'FROM ' + prefix + 'comments '
+            	+ 'LEFT JOIN ' + prefix + 'threads ON ' + prefix + 'threads.first_comment_id=' + prefix + 'comments.id '
+				+ 'WHERE threads.first_comment_id IS NULL '
 				+ (start >= 0 && limit >= 0 ? 'LIMIT ' + start + ',' + limit : '');
 				Exporter.error(query);
 
@@ -311,13 +311,13 @@ var logPrefix = '[nodebb-plugin-import-ubb]';
 	// 	var startms = +new Date();
     //
 	// 	var query = 'SELECT '
-	// 			+ prefix + 'PRIVATE_MESSAGE_USERS.TOPIC_ID as _cvid, '
-	// 			+ prefix + 'PRIVATE_MESSAGE_USERS.USER_ID as _uid1, '
-	// 			+ prefix + 'PRIVATE_MESSAGE_POSTS.USER_ID as _uid2 '
-	// 			+ 'FROM ' + prefix + 'PRIVATE_MESSAGE_USERS '
-	// 			+ 'JOIN ' + prefix + 'PRIVATE_MESSAGE_POSTS '
-	// 			+ 'ON ' + prefix + 'PRIVATE_MESSAGE_POSTS.TOPIC_ID = ' + prefix + 'PRIVATE_MESSAGE_USERS.TOPIC_ID '
-	// 			+ 'AND ' + prefix + 'PRIVATE_MESSAGE_POSTS.USER_ID != ' + prefix + 'PRIVATE_MESSAGE_USERS.USER_ID '
+	// 			+ prefix + 'PRIVATE_MESSAGE_users.TOPIC_ID as _cvid, '
+	// 			+ prefix + 'PRIVATE_MESSAGE_users.USER_ID as _uid1, '
+	// 			+ prefix + 'PRIVATE_MESSAGE_posts.USER_ID as _uid2 '
+	// 			+ 'FROM ' + prefix + 'PRIVATE_MESSAGE_users '
+	// 			+ 'JOIN ' + prefix + 'PRIVATE_MESSAGE_posts '
+	// 			+ 'ON ' + prefix + 'PRIVATE_MESSAGE_posts.TOPIC_ID = ' + prefix + 'PRIVATE_MESSAGE_users.TOPIC_ID '
+	// 			+ 'AND ' + prefix + 'PRIVATE_MESSAGE_posts.USER_ID != ' + prefix + 'PRIVATE_MESSAGE_users.USER_ID '
     //
 	// 	var parse = function(v) { return parseInt(v, 10); };
     //
@@ -360,13 +360,13 @@ var logPrefix = '[nodebb-plugin-import-ubb]';
 	// 	var startms = +new Date();
     //
 	// 	var query = 'SELECT '
-	// 			+ prefix + 'PRIVATE_MESSAGE_POSTS.POST_ID as _mid, '
-	// 			+ prefix + 'PRIVATE_MESSAGE_POSTS.POST_BODY as _content, '
-	// 			+ prefix + 'PRIVATE_MESSAGE_POSTS.USER_ID as _fromuid, '
-	// 			+ prefix + 'PRIVATE_MESSAGE_POSTS.TOPIC_ID as _cvid, '
-	// 			+ prefix + 'PRIVATE_MESSAGE_POSTS.POST_TIME as _timestamp '
+	// 			+ prefix + 'PRIVATE_MESSAGE_posts.POST_ID as _mid, '
+	// 			+ prefix + 'PRIVATE_MESSAGE_posts.POST_BODY as _content, '
+	// 			+ prefix + 'PRIVATE_MESSAGE_posts.USER_ID as _fromuid, '
+	// 			+ prefix + 'PRIVATE_MESSAGE_posts.TOPIC_ID as _cvid, '
+	// 			+ prefix + 'PRIVATE_MESSAGE_posts.POST_TIME as _timestamp '
     //
-	// 			+ 'FROM ' + prefix + 'PRIVATE_MESSAGE_POSTS '
+	// 			+ 'FROM ' + prefix + 'PRIVATE_MESSAGE_posts '
 	// 			+ (start >= 0 && limit >= 0 ? 'LIMIT ' + start + ',' + limit : '');
     //
 	// 	getConversations(function(err, conversations) {
